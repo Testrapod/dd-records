@@ -1,0 +1,69 @@
+/* 나눔손글씨펜
+ * font-family: 'Nanum Pen Script';
+ * 참고: https://noonnu.cc/font_page/44 */
+@import url('https://fonts.googleapis.com/earlyaccess/nanumpenscript.css');
+
+/* 카페24 써라운드
+ * font-family: 'Cafe24Ssurround';
+ * 참고: https://noonnu.cc/font_page/669 */
+@font-face {
+    font-family: 'Cafe24Ssurround';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 카카오 작은글씨
+ * font-family: 'KakaoSmallSans';
+ * 참고: https://noonnu.cc/font_page/1574 */
+@font-face {
+    font-family: 'KakaoSmallSans-Bold';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/2503@1.0/KakaoSmallSans-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* HS여름물빛체
+ * font-family: 'HSSummer';
+ * 참고: https://noonnu.cc/font_page/46 */
+@font-face {
+    font-family: 'HSSummer';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_one@1.0/HSSummer.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 산돌 삼립호빵체 Outline
+ * font-family: 'SDSamliphopangche_Outline
+ * 참고: https://noonnu.cc/font_page/508 */
+@font-face {
+    font-family: 'SDSamliphopangche_Outline';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts-20-12@1.0/SDSamliphopangche_Outline.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 리디바탕
+ * font-family: 'RIDIBatang';
+ * 참고: https://noonnu.cc/font_page/324 */
+@font-face {
+    font-family: 'RIDIBatang';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_twelve@1.0/RIDIBatang.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* 눈누 기초고딕
+ * font-family: 'NoonnuBasicGothicRegular';
+ * 참고: https://noonnu.cc/font_page/1496 */
+@font-face {
+    font-family: 'NoonnuBasicGothicRegular';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noon-2410@1.0/NoonnuBasicGothicRegular.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.title-font { font-family: 'HSSummer'; }
+.nav-font { font-family: 'KakaoSmallSans-Bold'; }
+.content-font { font-family: 'RIDIBatang'; }
+.note-font { font-family: 'Nanum Pen Script'; }
