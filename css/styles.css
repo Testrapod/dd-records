@@ -1,0 +1,23 @@
+.card {
+    height: 200px;
+}
+
+#gallery1,
+#gallery2 {
+    background-size: 105%;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+
+#gallery1 {
+    background-image: url("../img/floor1/jeju1.jpg");
+}
+
+#gallery2 {
+    background-image: url("../img/floor1/jeju2.jpg");
+}
+
+.backdrop-blur {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);  /* iOS Safari */
+}

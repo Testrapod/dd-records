@@ -1,16 +1,12 @@
-const records = [
-    ...first_floor_records,
-    ...second_floor_records,
-    ...third_floor_records,
-];
-
 var players = [];
 
-function onYouTubeIframeAPIReady () {
+function onYouTubeIframeAPIReady() {
+    const { height, width } = getYoutubeIframeSize();
+
     for (let i = 0; i < records.length; i++) {
         players[i] = new YT.Player(records[i].videoId, {
-            height: "390",
-            width: "640",
+            height: height,
+            width: width,
             videoId: records[i].videoId,
             playerVars: {
                 "playsinline": 1

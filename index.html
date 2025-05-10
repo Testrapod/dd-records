@@ -80,13 +80,14 @@
     </style>
     <link href="./assets/dist/css/cover.css" rel="stylesheet">
     <link href="./css/font.css" rel="stylesheet">
+    <link href="./css/styles.css" rel="stylesheet">
 </head>
 
 <body class="d-flex h-100 text-center text-bg-dark">
     <!-- Contianer -->
     <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
         <!-- Header -->
-        <header class="mb-auto">
+        <header id="header" class="mb-auto">
             <div>
                 <h1 class="float-md-start mb-3 title-font">동동 레코즈</h1>
                 <nav class="nav nav-masthead justify-content-center float-md-end mt-1 nav-font">
@@ -99,33 +100,42 @@
         </header>
 
         <!-- Slogan-->
-        <div class="px-3 py-3 mt-3 content-font">
+        <div id="slogan" class="px-3 py-3 mt-3 content-font">
             <h2 class="mb-2">음악으로 기억하다.</h2>
             <h4 class="text-secondary">당신의 모든 순간에 음악이 함께하길 바랍니다.</h4>
         </div>
 
         <!-- Main -->
-        <main class="px-3 py-3 mb-3 content-font">
-            <h3 id="floor" class="mb-4">1F 로비</h3>
+        <main id="main" class="px-3 py-3 mb-3 content-font">
+            <h3 id="floor" class="mb-4 d-none">1F 로비</h3>
 
-            <p id="description" class="mb-5">
+            <p id="description" class="mb-3">
                 장소와 음악이 함께 기억되면<br>
                 그 순간은 더욱 특별해집니다.<br>
             </p>
+
+            <div class="row mb-3">
+                <div class="col-sm-6 mb-3 mb-sm-0">
+                    <div id="gallery1" class="card"></div>
+                </div>
+                <div class="col-sm-6">
+                    <div id="gallery2" class="card"></div>
+                </div>
+            </div>
 
             <div id="contents"></div>
         </main>
 
         <!-- Footer -->
-        <footer class="mt-auto text-white-50 note-font">
-            <p>Created by <span class="text-white">동동</span></p>
-        </footer>
+        <footer id="footer" class="mt-auto text-white-50 note-font"></footer>
     </div>
 
     <!-- JS -->
     <script src="https://www.youtube.com/iframe_api"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="./assets/dist/js/bootstrap.bundle.min.js"></script>
     <script src="./js/records.js"></script>
+    <script src="./js/size.js"></script>
     <script src="./js/floor.js"></script>
     <script src="./js/youtube_api.js"></script>
 </body>

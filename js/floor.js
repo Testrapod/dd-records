@@ -6,7 +6,7 @@ function createRecordsCarousel(records, floor) {
     const indicatorsId = "recordsCarouselIndicators" + floor;
     const innerId = "recordsCarouselInner" + floor;
 
-    // Create carousel
+    // Create carousel (default hidden)
     const carousel = document.createElement("div");
     carousel.className = "carousel slide d-none";
     carousel.id = carouselId;
@@ -56,9 +56,9 @@ function createRecordsCarousel(records, floor) {
 
         div.innerHTML = `
             <div id="${record.videoId}" class="d-block w-100"></div>
-            <div class="carousel-caption d-none d-md-block">
+            <div class="carousel-caption px-3 bg-dark bg-opacity-50 backdrop-blur rounded-3">
                 <h5>${record.artist} - ${record.title}</h5>
-                <p>${record.description}</p>
+                <div>${record.description}</div>
             </div>
         `;
 
@@ -91,11 +91,41 @@ function showRecordsCarousel(floor) {
     }
 }
 
+function createSlideCarouselListener(floor) {
+    const carousel = document.getElementById("recordsCarousel" + floor);
+
+    carousel.addEventListener("slid.bs.carousel", function () {
+        const activeItem = carousel.querySelector(".carousel-item.active");
+        const iframe = activeItem.querySelector("iframe");
+
+        if (iframe && iframe.id) {
+            const iframeId = iframe.id;
+
+            const images = getRecordByVideoId(iframeId).galleryBackgroudImages;
+
+            crossfadeBackground($('#gallery1'), images[0]);
+            crossfadeBackground($('#gallery2'), images[1]);
+        }
+    });
+}
+
+function crossfadeBackground($card, newImageUrl) {
+    $card.fadeTo(300, 0, function () {
+        $card.css('background-image', `url(${newImageUrl})`);
+        $card.fadeTo(500, 1);
+    });
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     // Create carousels for each floor
     createRecordsCarousel(first_floor_records, 1);
     createRecordsCarousel(second_floor_records, 2);
     createRecordsCarousel(third_floor_records, 3);
+
+    // Create slide carousel listeners
+    createSlideCarouselListener(1);
+    createSlideCarouselListener(2);
+    createSlideCarouselListener(3);
 
     const floor = document.getElementById("floor");
     const description = document.getElementById("description");
@@ -105,34 +135,41 @@ document.addEventListener("DOMContentLoaded", function () {
     navLinks.forEach(link => {
         link.addEventListener("click", function (e) {
             e.preventDefault();  // Prevent a tag default action
-    
+
             navLinks.forEach(l => l.classList.remove("active"));
             navLinks.forEach(l => l.removeAttribute("aria-current"));
-    
+
             this.classList.add("active");
             this.setAttribute("aria-current", "page");
-    
+
             if (this.id === "first_floor") {
+                floor.classList.add("d-none");
                 floor.innerHTML = "1F 로비";
                 description.classList.remove("d-none");
                 showRecordsCarousel(1);
             } else if (this.id === "second_floor") {
+                floor.classList.remove("d-none");
                 floor.innerHTML = "2F 아티스트 존";
                 description.classList.remove("d-none");
                 showRecordsCarousel(2);
             } else if (this.id === "third_floor") {
+                floor.classList.remove("d-none");
                 floor.innerHTML = "3F 플레이스 존";
                 description.classList.remove("d-none");
                 showRecordsCarousel(3);
             } else if (this.id === "fourth_floor") {
+                floor.classList.remove("d-none");
                 floor.innerHTML = "4F 관계자 외 출입금지";
                 description.classList.add("d-none");
                 showRecordsCarousel(4);
             }
-    
+
             this.blur();
         });
     });
+
+    // Set footer text based on screen size
+    setFooterText();
 
     // Show first floor carousel by default
     showRecordsCarousel(1);
