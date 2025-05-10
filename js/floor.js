@@ -68,35 +68,26 @@ function createRecordsCarousel(records, floor) {
     $contents.append($carousel);
 }
 
-function showRecordsCarousel(floor) {
-    // Hide all carousels
-    $(".carousel").addClass("d-none");
-
-    // Show the selected carousel if floor is not 4
-    if (floor !== 4) {
-        const carouselId = "#recordsCarousel" + floor;
-        $(carouselId).removeClass("d-none");
-    } else {
-        return;
-    }
-}
-
 function createSlideCarouselListener(floor) {
     const $carousel = $("#recordsCarousel" + floor);
 
+    // Set up event listener for carousel slide
     $carousel.on("slid.bs.carousel", function () {
-        const $activeItem = $carousel.find(".carousel-item.active");
-
-        const $iframe = $activeItem.find("iframe");
-        const iframeId = $iframe.attr("id");
-
-        if (iframeId) {
-            const images = getRecordByVideoId(iframeId).galleryBackgroudImages;
-
-            crossfadeBackground($("#gallery1"), images[0]);
-            crossfadeBackground($("#gallery2"), images[1]);
-        }
+        setGalleryForCarousel($carousel);
     });
+}
+
+function setGalleryForCarousel($carousel) {
+    // Set the gallery background images for the active carousel item
+    const $activeItem = $carousel.find(".carousel-item.active");
+
+    const $iframe = $activeItem.find("iframe");
+    const iframeId = $iframe.attr("id");
+
+    const images = getRecordByVideoId(iframeId).galleryBackgroudImages;
+
+    crossfadeBackground($("#gallery1"), images[0]);
+    crossfadeBackground($("#gallery2"), images[1]);
 }
 
 function crossfadeBackground($card, newImageUrl) {
@@ -104,6 +95,78 @@ function crossfadeBackground($card, newImageUrl) {
         $card.css('background-image', `url(${newImageUrl})`);
         $card.fadeTo(500, 1);
     });
+}
+
+function changeFloorText(floor) {
+    const $slogan = $("#slogan");
+    const $description = $("#description");
+
+    if (floor !== 4) {
+        $slogan.removeClass("d-none");
+        $description.removeClass("d-none");
+    } else {
+        $slogan.addClass("d-none");
+        $description.removeClass("d-none");
+    }
+
+    if (floor === 1) {
+        $slogan.html(`
+            <h2 class="mb-2">음악으로 여행하다.</h2>
+            <h4 class="text-secondary">음악을 통해 여행을 떠나는 기분을 느껴보세요.</h4>
+        `);
+        $description.html(`
+            당신의 여행에 음악을 더해보세요.<br>
+            여행의 순간을 더욱 특별하게 만들어 줄겁니다.
+        `);
+    } else if (floor === 2) {
+        $slogan.html(`
+            <h2 class="mb-2">음악으로 기억하다.</h2>
+            <h4 class="text-secondary">당신의 모든 순간에 음악이 함께하길 바랍니다.</h4>
+        `);
+        $description.html(`
+            음악이 함께 기억되면<br>
+            그 순간은 더욱 특별해집니다.
+        `);
+    } else if (floor === 3) {
+        $slogan.html(`
+            <h2 class="mb-2">음악으로 떠올리다.</h2>
+            <h4 class="text-secondary">멋진 순간들을 음악으로 떠올리세요.</h4>
+        `);
+        $description.html(`
+            음악을 통해 떠오르는 순간들을<br>
+            당신과 함께 나누고 싶습니다.
+        `);
+    } else {
+        $slogan.html(``);
+        $description.html(`
+            관계자 외 출입금지 구역입니다.<br>
+            관리자 실로 들어가기 위해선 비밀번호를 입력해주세요.
+        `);
+    }
+}
+
+function changeFloorGallery(floor) {
+    const $gallerys = $("#gallerys");
+
+    if (floor !== 4) {
+        $gallerys.removeClass("d-none");
+
+        const $carousel = $("#recordsCarousel" + floor);
+        setGalleryForCarousel($carousel);
+    } else {
+        $gallerys.addClass("d-none");
+    }
+}
+
+function changeFloorRecords(floor) {
+    $(".carousel").addClass("d-none");
+
+    if (floor !== 4) {
+        const carouselId = "#recordsCarousel" + floor;
+        $(carouselId).removeClass("d-none");
+    } else {
+        return;
+    }
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -117,8 +180,6 @@ document.addEventListener("DOMContentLoaded", function () {
     createSlideCarouselListener(2);
     createSlideCarouselListener(3);
 
-    const $floor = $("#floor");
-    const $description = $("#description");
     const $navLinks = $(".nav-link");
 
     // Set up event listeners for nav links
@@ -133,21 +194,21 @@ document.addEventListener("DOMContentLoaded", function () {
         const id = $this.attr("id");
 
         if (id === "first_floor") {
-            $floor.addClass("d-none").html("1F 로비");
-            $description.removeClass("d-none");
-            showRecordsCarousel(1);
+            changeFloorText(1);
+            changeFloorGallery(1);
+            changeFloorRecords(1);
         } else if (id === "second_floor") {
-            $floor.removeClass("d-none").html("2F 아티스트 존");
-            $description.removeClass("d-none");
-            showRecordsCarousel(2);
+            changeFloorText(2);
+            changeFloorGallery(2);
+            changeFloorRecords(2);
         } else if (id === "third_floor") {
-            $floor.removeClass("d-none").html("3F 플레이스 존");
-            $description.removeClass("d-none");
-            showRecordsCarousel(3);
+            changeFloorText(3);
+            changeFloorGallery(3);
+            changeFloorRecords(3);
         } else if (id === "fourth_floor") {
-            $floor.removeClass("d-none").html("4F 관계자 외 출입금지");
-            $description.addClass("d-none");
-            showRecordsCarousel(4);
+            changeFloorText(4);
+            changeFloorGallery(4);
+            changeFloorRecords(4);
         }
 
         $this.blur();
@@ -157,5 +218,5 @@ document.addEventListener("DOMContentLoaded", function () {
     setFooterText();
 
     // Show first floor carousel by default
-    showRecordsCarousel(1);
+    changeFloorRecords(1);
 });
