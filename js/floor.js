@@ -1,110 +1,100 @@
 function createRecordsCarousel(records, floor) {
-    // Get contents div
-    const contents = document.getElementById("contents");
+    const $contents = $("#contents");
 
     const carouselId = "recordsCarousel" + floor;
     const indicatorsId = "recordsCarouselIndicators" + floor;
     const innerId = "recordsCarouselInner" + floor;
 
     // Create carousel (default hidden)
-    const carousel = document.createElement("div");
-    carousel.className = "carousel slide d-none";
-    carousel.id = carouselId;
+    const $carousel = $("<div>")
+        .addClass("carousel slide d-none")
+        .attr("id", carouselId);
 
     // Create indicators
-    const indicators = document.createElement("div");
-    indicators.className = "carousel-indicators";
-    indicators.id = indicatorsId;
+    const $indicators = $("<div>")
+        .addClass("carousel-indicators")
+        .attr("id", indicatorsId);
 
     // Create inner
-    const inner = document.createElement("div");
-    inner.className = "carousel-inner";
-    inner.id = innerId;
-
-    // Create previous and next buttons
-    const prevBtn = `
-        <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-    `;
-    const nextBtn = `
-        <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    `;
+    const $inner = $("<div>")
+        .addClass("carousel-inner")
+        .attr("id", innerId);
 
     // Fill carousel with records
     records.forEach((record, index) => {
-        // Create carousel indicators
-        const button = document.createElement("button");
-        button.type = "button";
-        button.setAttribute("data-bs-target", "#recordsCarousel");
-        button.setAttribute("data-bs-slide-to", index);
-        if (index === 0) {
-            button.classList.add("active");
-            button.setAttribute("aria-current", "true");
-        }
+        // Create indicator button
+        const $button = $("<button>")
+            .attr({
+                type: "button",
+                "data-bs-target": `#${carouselId}`,
+                "data-bs-slide-to": index
+            });
+        if (index === 0) $button.addClass("active").attr("aria-current", "true");
 
-        indicators.appendChild(button);
+        $indicators.append($button);
 
-        // Create carousel inner
-        const div = document.createElement("div");
-        div.classList.add("carousel-item");
-        if (index === 0) div.classList.add("active");
+        // Create inner item
+        const $item = $("<div>").addClass("carousel-item");
+        if (index === 0) $item.addClass("active");
 
-        div.innerHTML = `
+        $item.html(`
             <div id="${record.videoId}" class="d-block w-100"></div>
             <div class="carousel-caption px-3 bg-dark bg-opacity-50 backdrop-blur rounded-3">
                 <h5>${record.artist} - ${record.title}</h5>
                 <div>${record.description}</div>
             </div>
-        `;
+        `);
 
-        inner.appendChild(div);
+        $inner.append($item);
     });
 
-    // Assemble carousel
-    carousel.appendChild(indicators);
-    carousel.appendChild(inner);
-    carousel.insertAdjacentHTML("beforeend", prevBtn + nextBtn);
+    // Create nav buttons
+    const $prevBtn = $(`
+        <button class="carousel-control-prev" type="button" data-bs-target="#${carouselId}" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+    `);
 
-    // Append carousel to contents
-    contents.appendChild(carousel);
+    const $nextBtn = $(`
+        <button class="carousel-control-next" type="button" data-bs-target="#${carouselId}" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    `);
+
+    // Assemble and append
+    $carousel.append($indicators, $inner, $prevBtn, $nextBtn);
+    $contents.append($carousel);
 }
 
 function showRecordsCarousel(floor) {
     // Hide all carousels
-    const carousels = document.getElementsByClassName("carousel")
-    for (let i = 0; i < carousels.length; i++) {
-        carousels[i].classList.add("d-none");
-    }
+    $(".carousel").addClass("d-none");
 
-    // Show the selected carousel
+    // Show the selected carousel if floor is not 4
     if (floor !== 4) {
-        const carouselId = "recordsCarousel" + floor;
-        const carousel = document.getElementById(carouselId);
-        carousel.classList.remove("d-none");
+        const carouselId = "#recordsCarousel" + floor;
+        $(carouselId).removeClass("d-none");
     } else {
         return;
     }
 }
 
 function createSlideCarouselListener(floor) {
-    const carousel = document.getElementById("recordsCarousel" + floor);
+    const $carousel = $("#recordsCarousel" + floor);
 
-    carousel.addEventListener("slid.bs.carousel", function () {
-        const activeItem = carousel.querySelector(".carousel-item.active");
-        const iframe = activeItem.querySelector("iframe");
+    $carousel.on("slid.bs.carousel", function () {
+        const $activeItem = $carousel.find(".carousel-item.active");
 
-        if (iframe && iframe.id) {
-            const iframeId = iframe.id;
+        const $iframe = $activeItem.find("iframe");
+        const iframeId = $iframe.attr("id");
 
+        if (iframeId) {
             const images = getRecordByVideoId(iframeId).galleryBackgroudImages;
 
-            crossfadeBackground($('#gallery1'), images[0]);
-            crossfadeBackground($('#gallery2'), images[1]);
+            crossfadeBackground($("#gallery1"), images[0]);
+            crossfadeBackground($("#gallery2"), images[1]);
         }
     });
 }
@@ -127,45 +117,40 @@ document.addEventListener("DOMContentLoaded", function () {
     createSlideCarouselListener(2);
     createSlideCarouselListener(3);
 
-    const floor = document.getElementById("floor");
-    const description = document.getElementById("description");
-    const navLinks = document.querySelectorAll(".nav-link");
+    const $floor = $("#floor");
+    const $description = $("#description");
+    const $navLinks = $(".nav-link");
 
     // Set up event listeners for nav links
-    navLinks.forEach(link => {
-        link.addEventListener("click", function (e) {
-            e.preventDefault();  // Prevent a tag default action
+    $navLinks.on("click", function (e) {
+        e.preventDefault(); // Prevent default anchor behavior
 
-            navLinks.forEach(l => l.classList.remove("active"));
-            navLinks.forEach(l => l.removeAttribute("aria-current"));
+        $navLinks.removeClass("active").removeAttr("aria-current");
 
-            this.classList.add("active");
-            this.setAttribute("aria-current", "page");
+        const $this = $(this);
+        $this.addClass("active").attr("aria-current", "page");
 
-            if (this.id === "first_floor") {
-                floor.classList.add("d-none");
-                floor.innerHTML = "1F 로비";
-                description.classList.remove("d-none");
-                showRecordsCarousel(1);
-            } else if (this.id === "second_floor") {
-                floor.classList.remove("d-none");
-                floor.innerHTML = "2F 아티스트 존";
-                description.classList.remove("d-none");
-                showRecordsCarousel(2);
-            } else if (this.id === "third_floor") {
-                floor.classList.remove("d-none");
-                floor.innerHTML = "3F 플레이스 존";
-                description.classList.remove("d-none");
-                showRecordsCarousel(3);
-            } else if (this.id === "fourth_floor") {
-                floor.classList.remove("d-none");
-                floor.innerHTML = "4F 관계자 외 출입금지";
-                description.classList.add("d-none");
-                showRecordsCarousel(4);
-            }
+        const id = $this.attr("id");
 
-            this.blur();
-        });
+        if (id === "first_floor") {
+            $floor.addClass("d-none").html("1F 로비");
+            $description.removeClass("d-none");
+            showRecordsCarousel(1);
+        } else if (id === "second_floor") {
+            $floor.removeClass("d-none").html("2F 아티스트 존");
+            $description.removeClass("d-none");
+            showRecordsCarousel(2);
+        } else if (id === "third_floor") {
+            $floor.removeClass("d-none").html("3F 플레이스 존");
+            $description.removeClass("d-none");
+            showRecordsCarousel(3);
+        } else if (id === "fourth_floor") {
+            $floor.removeClass("d-none").html("4F 관계자 외 출입금지");
+            $description.addClass("d-none");
+            showRecordsCarousel(4);
+        }
+
+        $this.blur();
     });
 
     // Set footer text based on screen size

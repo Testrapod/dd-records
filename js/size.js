@@ -7,18 +7,18 @@ function checkScreenSize() {
 }
 
 function setFooterText() {
-    const screenSize = checkScreenSize()
-    const footer = document.getElementById("footer");
-    
+    const screenSize = checkScreenSize();
+    const $footer = $("#footer");
+
     if (screenSize === "MOBILE") {
-        footer.innerHTML = `<p><span class="text-white">PC</span> 혹은 <span class="text-white">태블릿</span> 환경을 권장합니다</p>`;
+        $footer.html(`<p><span class="text-white">PC</span> 혹은 <span class="text-white">태블릿</span> 환경을 권장합니다</p>`);
     } else if (screenSize === "DESKTOP") {
-        footer.innerHTML = `<p>Created by <span class="text-white">동동</span></p>`;
+        $footer.html(`<p>Created by <span class="text-white">동동</span></p>`);
     }
 }
 
 function getYoutubeIframeSize() {
-    const screenSize = checkScreenSize()
+    const screenSize = checkScreenSize();
     
     if (screenSize === "MOBILE") {
         return {

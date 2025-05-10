@@ -2,8 +2,7 @@
     height: 200px;
 }
 
-#gallery1,
-#gallery2 {
+#gallery1, #gallery2 {
     background-size: 105%;
     background-repeat: no-repeat;
     background-position: center;
