@@ -121,7 +121,7 @@ const third_floor_records = [
         title: "푸르른 이 여름 지나",
         description: "여름의 끝자락에 듣고 싶은 노래. 여름의 끝자락에서 느끼는 아쉬움과 그리움을 담아보자.",
         galleryBackgroudImages: [
-            "img/floor3/daebu1.jpg",
+            "img/floor3/daebu3.jpg",
             "img/floor3/daebu2.jpg",
         ],
     },
