@@ -1,5 +1,5 @@
 function checkScreenSize() {
-    if (window.innerWidth < 768) {
+    if (window.innerWidth < 600) {
         return "MOBILE";
     } else {
         return "DESKTOP";
