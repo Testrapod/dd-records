@@ -97,6 +97,34 @@ function crossfadeBackground($card, newImageUrl) {
     });
 }
 
+function checkDoorlockPassword(password) {
+    if (password === "동동레코즈") {
+        const $doorlock = $("#doorlock");
+        const $description = $("#description");
+        
+        $doorlock.addClass("d-none");
+        $description.html(`
+            관리자 실로 들어왔습니다.<br>
+            <br>
+            관리자 실 책상에는 메모 한 장과 카세트 테이프가 놓여 있습니다.<br>
+            마침 카세트 플레이어도 있네요.<br>
+            <br>
+            카세트 플레이어에 카세트를 넣고, 메모를 읽어 보시겠습니까?<br>
+
+            <div class="mt-3">
+                <button type="button" class="btn btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#secretPlayModal">
+                    확인
+                </button>
+            </div>
+        `);
+    } else {
+        $("#doorlockInput").addClass("is-invalid");
+        setTimeout(function () {
+            $("#doorlockInput").removeClass("is-invalid");
+        }, 1000);
+    }
+}
+
 function changeFloorText(floor) {
     const $slogan = $("#slogan");
     const $description = $("#description");
@@ -145,7 +173,7 @@ function changeFloorText(floor) {
     }
 }
 
-function changeFloorGallery(floor) {
+function changeFloorGallerys(floor) {
     const $gallerys = $("#gallerys");
 
     if (floor !== 4) {
@@ -155,6 +183,16 @@ function changeFloorGallery(floor) {
         setGalleryForCarousel($carousel);
     } else {
         $gallerys.addClass("d-none");
+    }
+}
+
+function changeFloorDoorlock(floor) {
+    const $doorlock = $("#doorlock");
+
+    if (floor === 4) {
+        $doorlock.removeClass("d-none");
+    } else {
+        $doorlock.addClass("d-none");
     }
 }
 
@@ -195,28 +233,70 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (id === "first_floor") {
             changeFloorText(1);
-            changeFloorGallery(1);
+            changeFloorGallerys(1);
+            changeFloorDoorlock(1);
             changeFloorRecords(1);
         } else if (id === "second_floor") {
             changeFloorText(2);
-            changeFloorGallery(2);
+            changeFloorGallerys(2);
+            changeFloorDoorlock(2);
             changeFloorRecords(2);
         } else if (id === "third_floor") {
             changeFloorText(3);
-            changeFloorGallery(3);
+            changeFloorGallerys(3);
+            changeFloorDoorlock(3);
             changeFloorRecords(3);
         } else if (id === "fourth_floor") {
             changeFloorText(4);
-            changeFloorGallery(4);
+            changeFloorGallerys(4);
+            changeFloorDoorlock(4);
             changeFloorRecords(4);
         }
 
         $this.blur();
     });
 
-    // Set footer text based on screen size
-    setFooterText();
+    // Set up event listener for doorlock
+    $("#doorlockButton").on("click", function() {
+        const password = $("#doorlock input").val();
+        $("#doorlock input").val("");
+        
+        checkDoorlockPassword(password);
+    });
+    $("#doorlock input").on("keypress", function(e) {
+        if (e.which === 13) {
+            const password = $(this).val();
+            $(this).val("");
 
+            checkDoorlockPassword(password);
+        }
+    });
+
+    // Set up event listener for play music button
+    $("#playMusicButton").click(function () {
+        playMusic();
+    });
+    $("#pauseMusicButton").click(function () {
+        pauseMusic();
+    });
+    $("#stopMusicButton").click(function () {
+        stopMusic();
+    });
+    $("#secretPlayModal").on("hidden.bs.modal", function () {
+        stopMusic();
+    });
+    music.addEventListener("ended", function () {
+        music.currentTime = 0;
+
+        $("#playMusicButton").removeClass("d-none");
+        $("#pauseMusicButton").addClass("d-none");
+        $("#stopMusicButton").addClass("d-none");
+    });
+
+    // Set intial state
+    setSecritRecordLyrics();
+    setFooterText();
+    
     // Show first floor carousel by default
     changeFloorRecords(1);
 });

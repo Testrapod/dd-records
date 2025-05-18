@@ -1,3 +1,4 @@
+/* Gallerys styles */
 .card {
     height: 200px;
 }
@@ -18,5 +19,36 @@
 
 .backdrop-blur {
     backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);  /* iOS Safari */
+    -webkit-backdrop-filter: blur(6px); /* iOS Safari */
+}
+
+
+/* Modal styles */
+.modal-blur-bg .modal-content {
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-blur-bg .modal-content::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: url("../img/modal/no_worries.jpg");
+    background-size: cover;
+    background-position: center;
+    filter: blur(50px);
+    z-index: 0;
+    opacity: 0.6;
+}
+
+.modal-blur-bg .modal-body,
+.modal-blur-bg .modal-header,
+.modal-blur-bg .modal-footer {
+    position: relative;
+    z-index: 1;
+}
+
+.no-text-shadow,
+.no-text-shadow * {
+    text-shadow: none !important;
 }
