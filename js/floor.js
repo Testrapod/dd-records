@@ -152,8 +152,8 @@ function changeFloorText(floor) {
             <h4 class="text-secondary">당신의 모든 순간에 음악이 함께하길 바랍니다.</h4>
         `);
         $description.html(`
-            음악이 함께 기억되면<br>
-            그 순간은 더욱 특별해집니다.
+            음악이 함께한다면<br>
+            그 순간은 더욱 오래 기억될 겁니다.
         `);
     } else if (floor === 3) {
         $slogan.html(`
@@ -296,7 +296,4 @@ document.addEventListener("DOMContentLoaded", function () {
     // Set intial state
     setSecritRecordLyrics();
     setFooterText();
-    
-    // Show first floor carousel by default
-    changeFloorRecords(1);
 });

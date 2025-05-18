@@ -1,3 +1,9 @@
+/* Text styles */
+.antique-white {
+    color: antiquewhite;
+}
+
+
 /* Gallerys styles */
 .card {
     height: 200px;
