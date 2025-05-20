@@ -98,7 +98,7 @@ function crossfadeBackground($card, newImageUrl) {
 }
 
 function checkDoorlockPassword(password) {
-    if (password === "동동레코즈") {
+    if (password.replace(/\s+/g, '') === "나는관리자다") {
         const $doorlock = $("#doorlock");
         const $description = $("#description");
         
@@ -286,6 +286,8 @@ document.addEventListener("DOMContentLoaded", function () {
         stopMusic();
     });
     music.addEventListener("ended", function () {
+        musicPlaying = false
+
         music.currentTime = 0;
 
         $("#playMusicButton").removeClass("d-none");
