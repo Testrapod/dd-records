@@ -98,7 +98,7 @@ function crossfadeBackground($card, newImageUrl) {
 }
 
 function checkDoorlockPassword(password) {
-    if (password.replace(/\s+/g, '') === "나는관리자다") {
+    if (password.replace(/\s+/g, '') === "제오멤하라") {
         const $doorlock = $("#doorlock");
         const $description = $("#description");
         
